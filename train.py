@@ -10,7 +10,6 @@ from sklearn.impute import SimpleImputer
 from sklearn.impute import KNNImputer
 
 # models
-
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -154,6 +153,7 @@ def main(
     numeric_feat = [feat for feat in df.columns if feat not in categoric_feat and feat not in ['customer_ID','target','S_2']]
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
+# Run 3 experiments with three different models: adaboost, gradientboost and randomforest
 main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
 main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
 main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
