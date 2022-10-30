@@ -86,17 +86,17 @@ def hyperparameter_optimizer(
     # define hyper-parameter search space
     search_space_gradient_boost = {
         # 'n_estimators':hp.choice('n_estimators',np.arange(10,101,1)),
-        'learning_rate':hp.loguniform('learning_rate',-3,1),
+        'learning_rate':hp.loguniform('learning_rate',-5,1),
         # 'min_samples_split':hp.loguniform('min_child_weight',-4,0),
         # 'max_depth':scope.int(hp.quniform('max_depth',5,100,5)),        
         'random_state':42
     }
     search_space_random_forest = {
-        'max_depth':hp.choice('max_depth',np.arange(10,100,10)),
+        'max_depth':hp.choice('max_depth',np.arange(10,1000,10)),
         'random_state': 42
     }
     search_space_ada_boost = {
-        'learning_rate':hp.loguniform('learning_rate',-3,1),    
+        'learning_rate':hp.loguniform('learning_rate',-5,1),    
         'random_state':42
     }
 
@@ -155,4 +155,5 @@ def main(
     numeric_feat = [feat for feat in df.columns if feat not in categoric_feat and feat not in ['customer_ID','target','S_2']]
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
+main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
 main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
