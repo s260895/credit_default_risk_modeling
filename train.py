@@ -138,7 +138,7 @@ def hyperparameter_optimizer(
 
     return best_result
     
-    
+
 def main(
     train_path = 'amex_data.csv',
     tracking_uri = 'sqlite:///mlflow.db',
@@ -155,4 +155,5 @@ def main(
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
 main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
-main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
+main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
+main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
