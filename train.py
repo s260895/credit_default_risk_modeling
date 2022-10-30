@@ -132,7 +132,7 @@ def hyperparameter_optimizer(
         fn = objective,
         space = search_space,
         algo = tpe.suggest,
-        max_evals=30,
+        max_evals=100,
         trials = Trials()
     )   
 
@@ -143,7 +143,7 @@ def hyperparameter_optimizer(
 def main(
     train_path = 'amex_data.csv',
     tracking_uri = 'sqlite:///mlflow.db',
-    experiment = 'ada-boost-amex-default-experiment',
+    experiment = 'adaboost-amex-default-experiment',
     target_feat = 'target',
     model_type = 'adaboost'
 ):
@@ -155,4 +155,4 @@ def main(
     numeric_feat = [feat for feat in df.columns if feat not in categoric_feat and feat not in ['customer_ID','target','S_2']]
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
-main()
+main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
