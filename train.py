@@ -61,9 +61,8 @@ def initialize_regression_model(params,categoric_feat,numeric_feat,model_type):
         regressor = RandomForestRegressor(**params)
     if model_type == 'adaboost':
         regressor = AdaBoostRegressor(**params)
-
-    else:
-        regressor = None
+    # else:
+    #     regressor = None
 
     regression_model = Pipeline(steps=[
         ('preprocess', preprocessor_pipeline),
@@ -139,21 +138,22 @@ def hyperparameter_optimizer(
     
 
 def main(
+    experiment,
+    model_type,
     train_path = 'amex_data.csv',
     tracking_uri = 'sqlite:///mlflow.db',
-    experiment = 'adaboost-amex-default-experiment',
     target_feat = 'target',
-    model_type = 'adaboost'
+   
 ):
     mlflow.set_tracking_uri(tracking_uri)
     mlflow.set_experiment(experiment)
-    df = pd.read_csv('amex_data.csv',index_col=0)
+    df = pd.read_csv(train_path,index_col=0)
     X_train,X_val,y_train,y_val = data_clean.cleaned_train_and_target(df,target_feat)
     categoric_feat = ['B_30', 'B_38', 'D_114', 'D_116', 'D_117', 'D_120', 'D_126', 'D_63', 'D_64', 'D_68']
     numeric_feat = [feat for feat in df.columns if feat not in categoric_feat and feat not in ['customer_ID','target','S_2']]
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
 # Run 3 experiments with three different models: adaboost, gradientboost and randomforest
-main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
+# main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
 main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
-main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
+# main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
