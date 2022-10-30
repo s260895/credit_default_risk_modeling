@@ -1,0 +1,7 @@
+mlflow
+hyperopt
+pandas
+scikit-learn
+scikit-learn-intelex
+flask
+gunicorn
