@@ -118,13 +118,13 @@ def hyperparameter_optimizer(
             pipe = initialize_regression_model(params=params,categoric_feat=None,numeric_feat=numeric_feat,model_type=model_type)
             pipe.fit(X_train,y_train)
             y_pred = pipe.predict(X_val)
-            custom_amex_metric = amex_metric.amex_metric(pd.DataFrame(y_val),pd.DataFrame(y_pred))
-            mlflow.log_metric('custom_amex_metric',amex_metric)
+            custom_amex_metric = amex_metric.amex_metric(pd.DataFrame(y_val.values,columns=['target']),pd.DataFrame(y_pred,columns=['prediction']))
+            mlflow.log_metric('custom_amex_metric',custom_amex_metric)
             # mlflow.log_artifact(scaler_path,artifact_path="preprocessor")
             # mlflow.log_artifact(vectorizer_path,artifact_path="preprocessor")
             # mlflow.xgboost.log_model(xgb_model,artifact_path="models_mlflow")
 
-        return {'loss':amex_metric,'status':STATUS_OK}
+        return {'loss':custom_amex_metric,'status':STATUS_OK}
 
 
     # Perform hyper-parameter optimization
@@ -132,7 +132,7 @@ def hyperparameter_optimizer(
         fn = objective,
         space = search_space,
         algo = tpe.suggest,
-        max_evals=3,
+        max_evals=30,
         trials = Trials()
     )   
 
