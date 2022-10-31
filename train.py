@@ -1,4 +1,5 @@
 data_clean = __import__('clean')
+from jmespath import search
 from matplotlib.scale import LogisticTransform
 import pandas as pd
 import numpy as np
@@ -13,6 +14,7 @@ from sklearn.impute import KNNImputer
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.neural_network import MLPRegressor
 
 # model performance metrics
 from sklearn.metrics import mean_squared_error
@@ -61,6 +63,8 @@ def initialize_regression_model(params,categoric_feat,numeric_feat,model_type):
         regressor = RandomForestRegressor(**params)
     if model_type == 'adaboost':
         regressor = AdaBoostRegressor(**params)
+    if model_type == 'neuralnet':
+        regressor = MLPRegressor(**params)
     # else:
     #     regressor = None
 
@@ -94,8 +98,14 @@ def hyperparameter_optimizer(
         'random_state': 42
     }
     search_space_ada_boost = {
-        'learning_rate':hp.loguniform('learning_rate',-5,1),    
+        'learning_rate':hp.loguniform('learning_rate',-5,0),    
         'random_state':42
+    }
+    search_space_neural_net = {
+        'hidden_layer_sizes':(500,100,50,),
+        'activation': 'logistic',
+        'solver': 'sgd',
+        'learning_rate_init': hp.loguniform('learning_rate_init',-7,-3)
     }
 
     if model_type == 'gradientboost':
@@ -104,7 +114,8 @@ def hyperparameter_optimizer(
         search_space = search_space_ada_boost
     if model_type == 'randomforest':
         search_space = search_space_random_forest
-    
+    if model_type == 'neuralnet':
+        search_space = search_space_neural_net
 
     # define objective function
     def objective(params):
@@ -153,7 +164,8 @@ def main(
     numeric_feat = [feat for feat in df.columns if feat not in categoric_feat and feat not in ['customer_ID','target','S_2']]
     best_result = hyperparameter_optimizer(X_train,X_val,y_train,y_val,numeric_feat,model_type=model_type)
 
-# Run 3 experiments with three different models: adaboost, gradientboost and randomforest
+# Run experiments with following models: adaboost, gradientboost, randomforest, neuralnet
 # main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
 # main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
-main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
+# main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
+main(experiment='neuralnet-amex-default-experiment',model_type='neuralnet')
