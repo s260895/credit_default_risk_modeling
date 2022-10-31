@@ -155,5 +155,5 @@ def main(
 
 # Run 3 experiments with three different models: adaboost, gradientboost and randomforest
 # main(experiment='adaboost-amex-default-experiment',model_type='adaboost')
-main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
-# main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
+# main(experiment='randomforest-amex-default-experiment',model_type='randomforest')
+main(experiment='gradientboost-amex-default-experiment',model_type='gradientboost')
