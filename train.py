@@ -102,7 +102,7 @@ def hyperparameter_optimizer(
         'random_state':42
     }
     search_space_neural_net = {
-        'hidden_layer_sizes':(500,100,50,),
+        'hidden_layer_sizes':(1000,100,10,),
         'activation': 'logistic',
         'solver': 'sgd',
         'learning_rate_init': hp.loguniform('learning_rate_init',-7,-3)
@@ -141,7 +141,7 @@ def hyperparameter_optimizer(
         fn = objective,
         space = search_space,
         algo = tpe.suggest,
-        max_evals=100,
+        max_evals=10,
         trials = Trials()
     )   
 
