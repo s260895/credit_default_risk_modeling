@@ -3,10 +3,10 @@ import mlflow
 import pandas as pd
 data_clean = __import__('clean')
 
-tracking_uri = 'sqlite:///mlflow.db',
-experiment_name = 'ada-boost-amex-default-experiment'
+tracking_uri = '127.0.0.1:5000',
+exp_name = 'gradientboost-amex-default-experiment'
 mlflow.set_tracking_uri(tracking_uri)
-mlflow.set_experiment(experiment_name)
+# mlflow.set_experiment(exp_name)
 
 # define function for prediction using saved model
 def predict(raw_data,train_feat,target_feat):
